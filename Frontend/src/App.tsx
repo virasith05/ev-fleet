@@ -3,14 +3,17 @@ import EvPage from "./EvPage";
 import ChargerPage from "./ChargerPage";
 import DriverPage from "./DriverPage";
 import DashboardPage from "./DashboardPage";
+import TripPage from "./TripPage";
+import Clock from "./components/Clock";
 
-type Page = "EV" | "CHARGER" | "DRIVER" | "DASHBOARD";
+type Page = "EV" | "CHARGER" | "DRIVER" | "DASHBOARD" | "TRIPS";
 
 function App() {
   const [page, setPage] = useState<Page>("DASHBOARD");
 
   return (
     <div className="page-container">
+      <Clock />
       <h1 className="page-title">EV Fleet Ops Console</h1>
 
       {/* Navigation */}
@@ -39,6 +42,12 @@ function App() {
         >
           Drivers
         </button>
+        <button
+          className={page === "TRIPS" ? "navbar-btn-active" : ""}
+          onClick={() => setPage("TRIPS")}
+        >
+          Trips
+        </button>
       </div>
 
       {/* Page View */}
@@ -46,6 +55,7 @@ function App() {
       {page === "EV" && <EvPage />}
       {page === "CHARGER" && <ChargerPage />}
       {page === "DRIVER" && <DriverPage />}
+      {page === "TRIPS" && <TripPage />}
     </div>
   );
 }

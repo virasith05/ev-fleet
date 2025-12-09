@@ -2,6 +2,33 @@ import React, { useEffect, useState } from "react";
 import { apiGet } from "./api/apiClient";
 import type { AtRiskVehicle, StatusCount, Trip } from "./types";
 
+// Helper function to format date and time in local timezone
+const formatDateTime = (dateTimeString: string | null | undefined) => {
+  if (!dateTimeString) return '-';
+  
+  // Parse the date string and create a Date object
+  const date = new Date(dateTimeString);
+  
+  // Check if the date is valid
+  if (isNaN(date.getTime())) {
+    console.error('Invalid date string:', dateTimeString);
+    return 'Invalid date';
+  }
+  
+  // Format the date and time in the local timezone
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+    timeZoneName: 'short'
+  };
+  
+  return date.toLocaleString('en-US', options);
+};
+
 const DashboardPage: React.FC = () => {
   const [evStatus, setEvStatus] = useState<StatusCount[]>([]);
   const [chargerStatus, setChargerStatus] = useState<StatusCount[]>([]);
@@ -154,8 +181,8 @@ const DashboardPage: React.FC = () => {
                     <td>{t.ev.registration}</td>
                     <td>{t.driver.name}</td>
                     <td>{t.status}</td>
-                    <td>{t.startTime}</td>
-                    <td>{t.endTime ?? "-"}</td>
+                    <td>{formatDateTime(t.startTime)}</td>
+                    <td>{t.endTime ? formatDateTime(t.endTime) : '-'}</td>
                     <td>{t.origin}</td>
                     <td>{t.destination}</td>
                   </tr>

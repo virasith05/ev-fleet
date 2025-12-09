@@ -48,11 +48,62 @@ const DriverPage: React.FC = () => {
     try {
       setCreating(true);
       setError(null);
+      
+      console.log('Creating driver with data:', form);
+      
+      // First, test the connection to the API
+      try {
+        const testResponse = await fetch('http://localhost:8081/api/drivers', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+        console.log('Test connection status:', testResponse.status);
+        const testData = await testResponse.text();
+        console.log('Test response:', testData);
+      } catch (testError) {
+        console.error('Test connection failed:', testError);
+      }
+
+      // Now try to create the driver
+      console.log('Sending POST request to /api/drivers with data:', JSON.stringify(form, null, 2));
+      
       const newDriver = await apiPost<Driver, typeof form>("/drivers", form);
+      
+      console.log('Driver created successfully:', newDriver);
+      
       setDrivers((prev) => [...prev, newDriver]);
       setForm(emptyForm);
-    } catch {
-      setError("Failed to create driver");
+      
+      // Refresh the list to ensure we have the latest data
+      await loadDrivers();
+      
+    } catch (err: any) {
+      console.error('Error in handleCreate:', err);
+      
+      let errorMessage = 'Failed to create driver';
+      
+      // Try to extract more detailed error information
+      if (err.message) {
+        errorMessage += `: ${err.message}`;
+        
+        // Try to parse the error message as JSON
+        try {
+          const errorMatch = err.message.match(/\{.*\}/);
+          if (errorMatch) {
+            const errorObj = JSON.parse(errorMatch[0]);
+            if (errorObj.message) {
+              errorMessage = errorObj.message;
+            }
+          }
+        } catch (e) {
+          console.log('Could not parse error message as JSON');
+        }
+      }
+      
+      setError(errorMessage);
     } finally {
       setCreating(false);
     }

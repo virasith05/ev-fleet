@@ -65,12 +65,61 @@ const EvPage: React.FC = () => {
       setCreating(true);
       setError(null);
 
+      console.log('Creating EV with data:', form);
+      
+      try {
+        // First, test the connection to the API
+        const testResponse = await fetch('http://localhost:8081/api/evs', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+        console.log('Test connection status:', testResponse.status);
+        const testData = await testResponse.text();
+        console.log('Test response:', testData);
+      } catch (testError) {
+        console.error('Test connection failed:', testError);
+      }
+
+      // Now try to create the EV
+      console.log('Sending POST request to /api/evs with data:', JSON.stringify(form, null, 2));
+      
       const newEv = await apiPost<Ev, Omit<Ev, "id">>("/evs", form);
+      
+      console.log('EV created successfully:', newEv);
+      
       setEvs((prev) => [...prev, newEv]);
       setForm(emptyForm);
+      
+      // Refresh the list to ensure we have the latest data
+      await loadEvs();
+      
     } catch (err: any) {
-      console.error(err);
-      setError("Failed to create EV");
+      console.error('Error in handleCreate:', err);
+      
+      let errorMessage = 'Failed to create EV';
+      
+      // Try to extract more detailed error information
+      if (err.message) {
+        errorMessage += `: ${err.message}`;
+        
+        // Try to parse the error message as JSON
+        try {
+          const errorMatch = err.message.match(/\{.*\}/);
+          if (errorMatch) {
+            const errorObj = JSON.parse(errorMatch[0]);
+            if (errorObj.message) {
+              errorMessage = errorObj.message;
+            }
+          }
+        } catch (e) {
+          console.log('Could not parse error message as JSON');
+        }
+      }
+      
+      setError(errorMessage);
     } finally {
       setCreating(false);
     }
