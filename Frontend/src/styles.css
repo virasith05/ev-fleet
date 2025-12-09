@@ -1,0 +1,145 @@
+/* ======================= GLOBAL THEME ======================= */
+
+body {
+  background-color: #f7f9fc;
+  margin: 0;
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+h1, h2, h3 {
+  color: #2c3e50;
+}
+
+button {
+  background-color: #2e86de;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+button:hover {
+  background-color: #1e6fbd;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input, select {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #b5cadd;
+  font-size: 14px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: fixed;        /* columns sized nicely */
+}
+
+th {
+  background-color: #dfe9f4;
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 14px;
+  color: #2c3e50;             /* darker text so it's visible */
+}
+
+td {
+  border-top: 1px solid #e8eef5;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #2c3e50;
+}
+
+.data-table-wrapper {
+  overflow-x: auto;
+}
+
+.data-table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.data-table th,
+.data-table td {
+  white-space: nowrap;
+  font-size: 13px;
+  color: #2c3e50;
+}
+
+
+.form-card {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #dfe9f4;
+  width: 100%;
+}
+
+.section {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #dfe9f4;
+}
+
+.navbar-btn-active {
+  background-color: #145ea8 !important;
+}
+
+/* ------- Center Page Layout ------- */
+
+.page-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* spacing between content and top */
+.page-title {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+/* spacing below navbar */
+.navbar-spacing {
+  margin-bottom: 25px;
+}
+
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+input,
+select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #b5cadd;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #f9fafc; /* light background, not dark */
+  color: #2c3e50;            /* dark text */
+}
