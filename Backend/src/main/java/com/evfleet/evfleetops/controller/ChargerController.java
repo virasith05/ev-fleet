@@ -62,4 +62,10 @@ public class ChargerController {
     public List<Charger> getChargersByStatus(@PathVariable ChargerStatus status) {
         return chargerService.getChargersByStatus(status);
     }
+    
+    @GetMapping("/all")
+    public ResponseEntity<List<Charger>> getAllChargersWithDetails() {
+        List<Charger> chargers = chargerService.getAllChargers();
+        return ResponseEntity.ok(chargers);
+    }
 }

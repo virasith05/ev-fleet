@@ -1,5 +1,8 @@
 const API_BASE_URL = "http://localhost:8081/api";
 
+// Log the environment for debugging
+console.log('API Base URL:', API_BASE_URL);
+
 export async function apiGet<T>(path: string): Promise<T> {
   try {
     console.log(`Making GET request to: ${API_BASE_URL}${path}`);
@@ -14,8 +17,14 @@ export async function apiGet<T>(path: string): Promise<T> {
     console.log(`Response status for ${path}:`, response.status);
     
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Error response from ${path}:`, errorText);
+      let errorText = 'No error details available';
+      try {
+        const errorData = await response.text();
+        errorText = errorData || 'No error details provided';
+        console.error(`Error response from ${path}:`, errorText);
+      } catch (e) {
+        console.error(`Error reading error response from ${path}:`, e);
+      }
       throw new Error(`GET ${path} failed with status ${response.status}: ${errorText}`);
     }
     
